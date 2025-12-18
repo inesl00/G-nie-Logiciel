@@ -3,7 +3,7 @@ import 'package:flutter_application_1/profil.dart';
 import 'package:uuid/uuid.dart';
 import 'sport_goal.dart';
 import 'sport_goal_storage.dart';
-import 'validators.dart';
+import '../../shared/validators.dart';
 
 class SportGoals extends StatefulWidget {
   const SportGoals({super.key});
