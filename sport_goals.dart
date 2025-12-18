@@ -69,52 +69,69 @@ class _SportGoalsState extends State<SportGoals> {
         key: _formKey,
         child: Column(
           children: [
-            DropdownButtonFormField<String>(
-              value: _selectedSport,
-              decoration: const InputDecoration(
-                labelText: 'Type d’activité',
-                border: OutlineInputBorder(),
-              ),
-              items: const [
-                DropdownMenuItem(value: 'Course', child: Text('Course')),
-                DropdownMenuItem(value: 'Marche', child: Text('Marche')),
-                DropdownMenuItem(value: 'Vélo', child: Text('Vélo')),
-              ],
-              onChanged: (v) => _selectedSport = v!,
-            ),
+            _buildSportDropdown(),
             const SizedBox(height: 12),
-            TextFormField(
-              initialValue: '3',
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Fréquence / semaine',
-                border: OutlineInputBorder(),
-              ),
-              validator: (v) => _validatePositiveInteger(v),
-              onSaved: (v) => _frequencyPerWeek = int.parse(v!),
-            ),
+            _buildFrequencyField(),
             const SizedBox(height: 12),
-            TextFormField(
-              initialValue: '30',
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Durée par séance (min)',
-                border: OutlineInputBorder(),
-              ),
-              validator: (v) => _validatePositiveInteger(v),
-              onSaved: (v) => _sessionDurationMinutes = int.parse(v!),
-            ),
+            _buildDurationField(),
             const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _saveGoal,
-                icon: const Icon(Icons.save),
-                label: const Text('Enregistrer et voir mon profil'),
-              ),
-            ),
+            _buildSaveButton(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSportDropdown() {
+    return DropdownButtonFormField<String>(
+      value: _selectedSport,
+      decoration: const InputDecoration(
+        labelText: 'Type d’activité',
+        border: OutlineInputBorder(),
+      ),
+      items: _availableSports
+          .map((sport) => DropdownMenuItem(
+                value: sport,
+                child: Text(sport),
+              ))
+          .toList(),
+      onChanged: (value) => _selectedSport = value!,
+    );
+  }
+
+  Widget _buildFrequencyField() {
+    return TextFormField(
+      initialValue: _defaultFrequencyPerWeek.toString(),
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
+        labelText: 'Fréquence / semaine',
+        border: OutlineInputBorder(),
+      ),
+      validator: (value) => _validatePositiveInteger(value),
+      onSaved: (value) => _frequencyPerWeek = int.parse(value!),
+    );
+  }
+
+  Widget _buildDurationField() {
+    return TextFormField(
+      initialValue: _defaultDurationMinutes.toString(),
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
+        labelText: 'Durée par séance (min)',
+        border: OutlineInputBorder(),
+      ),
+      validator: (value) => _validatePositiveInteger(value),
+      onSaved: (value) => _sessionDurationMinutes = int.parse(value!),
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: _saveGoal,
+        icon: const Icon(Icons.save),
+        label: const Text('Enregistrer et voir mon profil'),
       ),
     );
   }
