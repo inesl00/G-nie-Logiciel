@@ -3,6 +3,7 @@ import 'package:flutter_application_1/profil.dart';
 import 'package:uuid/uuid.dart';
 import 'sport_goal.dart';
 import 'sport_goal_storage.dart';
+import 'validators.dart';
 
 class SportGoals extends StatefulWidget {
   const SportGoals({super.key});
@@ -53,13 +54,6 @@ class _SportGoalsState extends State<SportGoals> {
     );
   }
   
-  String? _validatePositiveInteger(String? value) {
-    final parsedValue = int.tryParse(value ?? '');
-    if (parsedValue == null || parsedValue <= 0) {
-      return 'Veuillez entrer un nombre positif';
-    }
-    return null;
-  }
   
   @override
   Widget build(BuildContext context) {
@@ -107,7 +101,7 @@ class _SportGoalsState extends State<SportGoals> {
         labelText: 'Fréquence / semaine',
         border: OutlineInputBorder(),
       ),
-      validator: (value) => _validatePositiveInteger(value),
+      validator: (value) => validatePositiveInteger(value),
       onSaved: (value) => _frequencyPerWeek = int.parse(value!),
     );
   }
@@ -120,7 +114,7 @@ class _SportGoalsState extends State<SportGoals> {
         labelText: 'Durée par séance (min)',
         border: OutlineInputBorder(),
       ),
-      validator: (value) => _validatePositiveInteger(value),
+      validator: (value) => validatePositiveInteger(value),
       onSaved: (value) => _sessionDurationMinutes = int.parse(value!),
     );
   }
