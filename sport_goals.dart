@@ -12,10 +12,14 @@ class SportGoals extends StatefulWidget {
 }
 
 class _SportGoalsState extends State<SportGoals> {
+  static const List<String> _availableSports = ['Course', 'Marche', 'Vélo'];
+  static const int _defaultFrequencyPerWeek = 3;
+  static const int _defaultDurationMinutes = 30;
+
   final _formKey = GlobalKey<FormState>();
-  String _sport = 'Course';
-  int _freq = 3;
-  int _duration = 30;
+  String _selectedSport = _availableSports[0];
+  int _frequencyPerWeek = _defaultFrequencyPerWeek;
+  int _sessionDurationMinutes = _defaultDurationMinutes;
 
   Future<void> _saveGoal() async {
     if (!_formKey.currentState!.validate()) return; //vérification des champs via validators
@@ -23,9 +27,9 @@ class _SportGoalsState extends State<SportGoals> {
 
     final goal = SportGoal(
       id: const Uuid().v4(),
-      sport: _sport,
-      frequencyPerWeek: _freq,
-      durationMinutes: _duration,
+      sport: _selectedSport,
+      frequencyPerWeek: _frequencyPerWeek,
+      durationMinutes: _sessionDurationMinutes,
     );
 
     await SportGoalStorage.addGoal(goal);
@@ -36,7 +40,7 @@ class _SportGoalsState extends State<SportGoals> {
       MaterialPageRoute(builder: (_) => const Profile()),
     );
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,7 +50,7 @@ class _SportGoalsState extends State<SportGoals> {
         child: Column(
           children: [
             DropdownButtonFormField<String>(
-              value: _sport,
+              value: _selectedSport,
               decoration: const InputDecoration(
                 labelText: 'Type d’activité',
                 border: OutlineInputBorder(),
@@ -56,7 +60,7 @@ class _SportGoalsState extends State<SportGoals> {
                 DropdownMenuItem(value: 'Marche', child: Text('Marche')),
                 DropdownMenuItem(value: 'Vélo', child: Text('Vélo')),
               ],
-              onChanged: (v) => _sport = v!,
+              onChanged: (v) => _selectedSport = v!,
             ),
             const SizedBox(height: 12),
             TextFormField(
@@ -71,7 +75,7 @@ class _SportGoalsState extends State<SportGoals> {
                 if (n == null || n <= 0) return 'Nombre invalide';
                 return null;
               },
-              onSaved: (v) => _freq = int.parse(v!),
+              onSaved: (v) => _frequencyPerWeek = int.parse(v!),
             ),
             const SizedBox(height: 12),
             TextFormField(
@@ -86,7 +90,7 @@ class _SportGoalsState extends State<SportGoals> {
                 if (n == null || n <= 0) return 'Nombre invalide';
                 return null;
               },
-              onSaved: (v) => _duration = int.parse(v!),
+              onSaved: (v) => _sessionDurationMinutes = int.parse(v!),
             ),
             const SizedBox(height: 20),
             SizedBox(
