@@ -22,23 +22,43 @@ class _SportGoalsState extends State<SportGoals> {
   int _sessionDurationMinutes = _defaultDurationMinutes;
 
   Future<void> _saveGoal() async {
-    if (!_formKey.currentState!.validate()) return; //vérification des champs via validators
-    _formKey.currentState!.save(); //sauvegarde les valeurs des champs via onSaved
+    if (_FormIsNotValid()) return;
+    _formKey.currentState!.save();
 
-    final goal = SportGoal(
+    final newGoal = _createGoal();
+    await SportGoalStorage.addGoal(newGoal);
+
+    if (!mounted) return;
+    _navigateToProfile();
+    
+  }
+
+  bool _FormIsNotValid() {
+    return !_formKey.currentState!.validate();
+  }
+
+  SportGoal _createGoal() {
+    return SportGoal(
       id: const Uuid().v4(),
       sport: _selectedSport,
       frequencyPerWeek: _frequencyPerWeek,
       durationMinutes: _sessionDurationMinutes,
     );
+  }
 
-    await SportGoalStorage.addGoal(goal);
-
-    if (!mounted) return; // Vérification que le widget est toujours dans l’arbre
+  void _navigateToProfile() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const Profile()),
     );
+  }
+  
+  String? _validatePositiveInteger(String? value) {
+    final parsedValue = int.tryParse(value ?? '');
+    if (parsedValue == null || parsedValue <= 0) {
+      return 'Veuillez entrer un nombre positif';
+    }
+    return null;
   }
   
   @override
@@ -70,11 +90,7 @@ class _SportGoalsState extends State<SportGoals> {
                 labelText: 'Fréquence / semaine',
                 border: OutlineInputBorder(),
               ),
-              validator: (v) {
-                final n = int.tryParse(v ?? '');
-                if (n == null || n <= 0) return 'Nombre invalide';
-                return null;
-              },
+              validator: (v) => _validatePositiveInteger(v),
               onSaved: (v) => _frequencyPerWeek = int.parse(v!),
             ),
             const SizedBox(height: 12),
@@ -85,11 +101,7 @@ class _SportGoalsState extends State<SportGoals> {
                 labelText: 'Durée par séance (min)',
                 border: OutlineInputBorder(),
               ),
-              validator: (v) {
-                final n = int.tryParse(v ?? '');
-                if (n == null || n <= 0) return 'Nombre invalide';
-                return null;
-              },
+              validator: (v) => _validatePositiveInteger(v),
               onSaved: (v) => _sessionDurationMinutes = int.parse(v!),
             ),
             const SizedBox(height: 20),
