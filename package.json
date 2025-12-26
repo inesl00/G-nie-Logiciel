@@ -1,0 +1,26 @@
+{
+  "name": "g-nie-logiciel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inesl00/G-nie-Logiciel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inesl00/G-nie-Logiciel/issues"
+  },
+  "homepage": "https://github.com/inesl00/G-nie-Logiciel#readme",
+  "devDependencies": {
+    "jest": "^30.2.0"
+  }
+}
