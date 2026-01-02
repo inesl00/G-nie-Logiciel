@@ -1,6 +1,6 @@
 const bankDAO = {
-    retrieveBalance: function(){
-        console.log("Retrieve balance");
+    retrieveBalance: function(accountId){
+        console.log("Retrieve balance for account: " + accountId);
     } 
 }
 module.exports = bankDAO;
