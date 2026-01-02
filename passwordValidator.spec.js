@@ -30,3 +30,14 @@ test('custom letter in password', () => {
     expect(validatePassword('1234567n', {minLetter : 2})).toBe(false);
     expect(validatePassword('123456ou', {minLetter : 2})).toBe(true);
 })
+
+test('custom rules', () => {
+    const options = {minLetter : 2, 
+        rules: [(mdp)=> mdp != 'password1',
+                (mdp)=> mdp.includes('@')
+        ]
+    };
+    expect(validatePassword('password1', options)).toBe(false);
+    expect(validatePassword('password2', options)).toBe(false);
+    expect(validatePassword('p@ssword2', options)).toBe(true);
+})

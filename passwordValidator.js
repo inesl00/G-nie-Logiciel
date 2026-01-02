@@ -6,6 +6,11 @@ function validatePassword(password, options) {
     if (password.length < minLength) return false;
     if ((password.match(/\d/g) || []).length < minNumber) return false;
     if ((password.match(/[a-zA-Z]/g) || []).length < minLetter) return false;
+    if (options?.rules) {
+        for (const rule of options.rules) {
+            if (!rule(password)) return false;
+        }
+    }
     return true;
 }
 module.exports = validatePassword;
