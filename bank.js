@@ -6,8 +6,8 @@ const bank = {
         return bankDAO.retrieveBalance(accountId);
     },
 
-    transferMoney: function(accountId, amount){
-        bankTransfer.transfer(accountId, amount);
+    transferMoney: async function(accountId, amount){
+        await bankTransfer.transfer(accountId, amount);
         bankDAO.debitAccount(accountId, amount);
     }
 }
