@@ -1,5 +1,6 @@
 const bank = require('./bank');
 const bankDAO = require('./bankDAO');
+const bankTransfer = require('./bankTransfer');
 
 test('getBalance call retrieveBalance without executing', () => {
     const spy = jest.spyOn(bankDAO, 'retrieveBalance').mockImplementation(() => {});
@@ -27,5 +28,16 @@ test('getBalance return the balance retrieved from DAO', () => {
     const result = bank.getBalance(accountId);
 
     expect(result).toBe(15);
+    spy.mockRestore();
+});
+
+test('transferMoney call transfer with accountId and amount', () => {
+    const spy = jest.spyOn(bankTransfer, 'transfer').mockImplementation(() => {});
+    const accountId = "12345";
+    const amount = 15;
+
+    bank.transferMoney(accountId, amount);
+
+    expect(spy).toHaveBeenCalledWith(accountId, amount);
     spy.mockRestore();
 });
