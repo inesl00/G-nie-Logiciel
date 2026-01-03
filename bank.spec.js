@@ -41,3 +41,17 @@ test('transferMoney call transfer with accountId and amount', () => {
     expect(spy).toHaveBeenCalledWith(accountId, amount);
     spy.mockRestore();
 });
+
+test('transferMoney call transfer and debitAccount with accountId and amount', () => {
+    const spyTransfer = jest.spyOn(bankTransfer, 'transfer').mockImplementation(() => {});
+    const spyDebit = jest.spyOn(bankDAO, 'debitAccount').mockImplementation(() => {});
+    const accountId = "12345";
+    const amount = 15;
+
+    bank.transferMoney(accountId, amount);
+
+    expect(spyTransfer).toHaveBeenCalledWith(accountId, amount);
+    expect(spyDebit).toHaveBeenCalledWith(accountId, amount);
+    spyTransfer.mockRestore();
+    spyDebit.mockRestore();
+});

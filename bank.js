@@ -8,6 +8,7 @@ const bank = {
 
     transferMoney: function(accountId, amount){
         bankTransfer.transfer(accountId, amount);
+        bankDAO.debitAccount(accountId, amount);
     }
 }
 module.exports = bank;
