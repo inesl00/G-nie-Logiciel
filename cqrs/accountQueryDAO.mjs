@@ -1,18 +1,21 @@
 import { ACCOUNT_LIST } from "./database.mjs";
 import { accountSummaryList } from "./queryDatabase.mjs";
+import { accountCache } from "./cache.mjs";
 
 export const accountQueryDAO = {
     retrieveAccountList() {
         return accountSummaryList;
     },
     retrieveAccount(id) {
-        const account = ACCOUNT_LIST.find((acc) => acc.id == id);
-        if (!account) return null;
-        const {lastName, firstName, ...rest} = account;
-        return {
-            id: rest.id,
-            name: `${lastName} ${firstName}`,
-            ...rest,
-        };
+        return accountCache[id];
+    },
+    insertAccountSummary(account) {
+        accountSummaryList.push(account);
+    },
+    saveAccountSummary(account) {
+        const index = accountSummaryList.findIndex((acc) => acc.id == account.id);
+        if (index != -1) {
+            accountSummaryList[index] = account;
+        }
     },
 };

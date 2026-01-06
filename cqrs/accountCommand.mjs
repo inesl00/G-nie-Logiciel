@@ -1,17 +1,19 @@
 import { Account } from "./account.mjs";
 import { accountCommandDAO } from "./accountCommandDAO.mjs";
-import { accountSummaryList } from "./queryDatabase.mjs";
+import { accountQueryDAO } from "./accountQueryDAO.mjs";
+import { cacheDAO } from "./cacheDAO.mjs";
 
 export const accountCommand = {
     addAccount(lastName, firstName) {
         const newAccount = new Account(null, lastName, firstName);
         accountCommandDAO.insertAccount(newAccount);
         
-        this.addAccountInQueryDB(newAccount);
-    },
-    addAccountInQueryDB(account) {
-        const {creationDate, ...accountWithoutDate} = account;
-        accountSummaryList.push(accountWithoutDate);
+        const {creationDate, ...accountWithoutDate} = newAccount;
+        accountQueryDAO.insertAccountSummary(accountWithoutDate);
+
+        const {lastName: ln, firstName: fn, ...accountforCache} = newAccount;
+        accountforCache.name = `${firstName} ${lastName}`;
+        cacheDAO.saveAccount(accountforCache);
     },
     saveAccount(id, lastName, firstName) {
         const updatedAccount = accountCommandDAO.restore(id);
@@ -21,13 +23,11 @@ export const accountCommand = {
         }
         accountCommandDAO.updateAccount(updatedAccount);
 
-        this.saveAccountInQueryDB(updatedAccount);
-    },
-    saveAccountInQueryDB(account) {
-        const index = accountSummaryList.findIndex((acc) => acc.id == account.id);
-        if (index != -1) {
-            const {creationDate, ...accountWithoutDate} = account;
-            accountSummaryList[index] = accountWithoutDate;
-        }
+        const {creationDate, ...accountWithoutDate} = updatedAccount;
+        accountQueryDAO.saveAccountSummary(accountWithoutDate);
+
+        const {lastName: ln, firstName: fn, ...accountforCache} = updatedAccount;
+        accountforCache.name = `${firstName} ${lastName}`;
+        cacheDAO.saveAccount(accountforCache);
     },
 };
