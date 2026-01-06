@@ -11,3 +11,7 @@ console.log(accounts);
 console.log("\nMise à jour d'un compte :");
 const firstAccountId = accounts[0].id;
 accountService.saveAccount(firstAccountId, "Liu", "Ines");
+
+console.log("\nRécupération d'un compte :");
+const account = accountService.getAccount(firstAccountId);
+console.log(account);
