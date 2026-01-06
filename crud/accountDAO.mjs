@@ -6,7 +6,12 @@ export const accountDAO = {
     ACCOUNT_LIST.push(account);
     console.log(ACCOUNT_LIST);
   },
-  retrieveAccountList() {},
+  retrieveAccountList() {
+    return ACCOUNT_LIST.map(function (account) {
+        const {creationDate, ...accountWithoutDate} = account;
+        return accountWithoutDate;
+    });
+  },
   updateAccount(account) {},
   retrieveAccount(id) {},
 };
