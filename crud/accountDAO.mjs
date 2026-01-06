@@ -22,6 +22,12 @@ export const accountDAO = {
         console.log("Compte introuvable");
     }
   },
+  restore(id){
+    const account = ACCOUNT_LIST.find((acc) => acc.id == id);
+    if (account) {
+        return new Account(account.id, account.lastName, account.firstName, account.creationDate);
+    }
+  },
   retrieveAccount(id) {
     const account = ACCOUNT_LIST.find((acc) => acc.id == id);
     if (!account) return null;
