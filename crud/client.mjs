@@ -8,3 +8,6 @@ console.log("\nListe des comptes :");
 const accounts = accountService.getAccountList();
 console.log(accounts);
 
+console.log("\nMise à jour d'un compte :");
+const firstAccountId = accounts[0].id;
+accountService.saveAccount(firstAccountId, "Liu", "Ines");

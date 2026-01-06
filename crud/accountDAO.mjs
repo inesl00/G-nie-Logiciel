@@ -12,6 +12,15 @@ export const accountDAO = {
         return accountWithoutDate;
     });
   },
-  updateAccount(account) {},
+  updateAccount(account) {
+    const index = ACCOUNT_LIST.findIndex((acc) => acc.id == account.id);
+    if (index != -1) {
+      ACCOUNT_LIST[index] = account;
+      console.log(ACCOUNT_LIST);
+    }
+    else {
+        console.log("Compte introuvable");
+    }
+  },
   retrieveAccount(id) {},
 };
