@@ -24,17 +24,16 @@ export const accountCommand = {
         const currentAccount = accountCommandDAO.restoreEvent(id);
         if (!currentAccount) return;
         
-        const copyAccount = {...currentAccount};
-        copyAccount.lastName = lastName;
-        copyAccount.firstName = firstName;
+        currentAccount.lastName = lastName;
+        currentAccount.firstName = firstName;
         
-        const event = new Event("accountUpdated", id, copyAccount);
+        const event = new Event("accountUpdated", id, currentAccount);
         eventStore.addEvent(event);
 
-        const {creationDate, ...accountWithoutDate} = copyAccount;
+        const {creationDate, ...accountWithoutDate} = currentAccount;
         accountQueryDAO.saveAccountSummary(accountWithoutDate);
 
-        const {lastName: ln, firstName: fn, ...accountforCache} = copyAccount;
+        const {lastName: ln, firstName: fn, ...accountforCache} = currentAccount;
         accountforCache.name = `${firstName} ${lastName}`;
         cacheDAO.saveAccount(accountforCache);
     },

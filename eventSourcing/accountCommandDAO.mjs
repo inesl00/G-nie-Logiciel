@@ -31,8 +31,19 @@ export const accountCommandDAO = {
         events.forEach(event => {
             switch (event.name) {
                 case "accountAdded":
+                    const p = event.payload;
+                    
+                    restoredAccount = new Account(p.id, p.lastName, p.firstName, p.creationDate);
+                    break;
                 case "accountUpdated":
-                    restoredAccount = event.payload;
+                    const mergedData = { ...restoredAccount, ...event.payload };
+
+                    restoredAccount = new Account(
+                        mergedData.id, 
+                        mergedData.lastName, 
+                        mergedData.firstName, 
+                        mergedData.creationDate
+                    );
                     break;
                 case "accountDeleted":
                     restoredAccount = null;
