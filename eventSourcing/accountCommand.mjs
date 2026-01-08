@@ -21,10 +21,10 @@ export const accountCommand = {
         eventStore.addEvent(event);
     },
     saveAccount(id, lastName, firstName) {
-        const lastAccount = eventList.findLast(event => event.accountId === id).payload;
-        if (!lastAccount) return;
+        const currentAccount = accountCommandDAO.restoreEvent(id);
+        if (!currentAccount) return;
         
-        const copyAccount = {...lastAccount};
+        const copyAccount = {...currentAccount};
         copyAccount.lastName = lastName;
         copyAccount.firstName = firstName;
         

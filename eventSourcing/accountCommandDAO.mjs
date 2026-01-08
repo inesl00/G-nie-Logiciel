@@ -1,5 +1,6 @@
 import { ACCOUNT_LIST } from "./database.mjs";
 import { Account } from "./account.mjs";
+import { eventList } from "./eventStore.mjs";
 
 export const accountCommandDAO = {
     insertAccount(account) {
@@ -21,5 +22,23 @@ export const accountCommandDAO = {
         if (account) {
             return new Account(account.id, account.lastName, account.firstName, account.creationDate);
         }
+    },
+    restoreEvent(id) {
+        const events = eventList.filter(event => event.accountId == id);
+        if (events.length == 0) return null;
+        let restoredAccount = null;
+
+        events.forEach(event => {
+            switch (event.name) {
+                case "accountAdded":
+                case "accountUpdated":
+                    restoredAccount = event.payload;
+                    break;
+                case "accountDeleted":
+                    restoredAccount = null;
+                    break;
+            }
+        });
+        return restoredAccount;
     },
 };
