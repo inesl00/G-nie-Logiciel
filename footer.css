@@ -1,0 +1,7 @@
+footer {
+    --main-color: rgb(243, 73, 144);
+    color: var(--main-color);
+    border: var(--taille-bordure) var(--type-bordure) var(--bordure-color);
+    font-size: 12px;
+    padding: var(--espace-petit);
+}
